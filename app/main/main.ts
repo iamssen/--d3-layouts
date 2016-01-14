@@ -54,7 +54,7 @@ let config:RouteDefinition[] = [
 	]
 })
 @View({
-	templateUrl: '/app/main/main.html',
+	templateUrl: 'app/main/main.html',
 	directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig(config)
