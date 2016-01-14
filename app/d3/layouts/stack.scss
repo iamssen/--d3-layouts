@@ -1,0 +1,20 @@
+svg.d3-layout-stack {
+	g.axis {
+		text {
+			font-size: 10px;
+			font-family: sans-serif;
+		}
+
+		line, path {
+			fill: none;
+			stroke: #000000;
+			shape-rendering: crispEdges;
+		}
+	}
+
+	g.axis--x {
+		path {
+			display: none;
+		}
+	}
+}

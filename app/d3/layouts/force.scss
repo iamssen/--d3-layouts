@@ -1,0 +1,31 @@
+svg.d3-layout-force {
+	background-color: #eeeeee;
+
+	line.link {
+		stroke: #000;
+		stroke-width: 1px;
+	}
+
+	circle.node {
+		cursor: move;
+		fill: #ccc;
+		stroke: #000;
+		stroke-width: 1px;
+
+		&.fixed {
+			fill: #ff0000;
+		}
+	}
+}
+
+div.d3-layout-force {
+	margin-bottom: 20px;
+
+	p {
+		font-size: 0.9rem;
+
+		select {
+			width: 70px;
+		}
+	}
+}

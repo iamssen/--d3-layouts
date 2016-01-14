@@ -1,0 +1,9 @@
+<ul class="main-menu">
+	<li *ngFor="#config of routeConfig">
+		<a [class.main-menu-active]="isActive(config.path)" [routerLink]="[config.name]">{{config.name}}</a>
+	</li>
+</ul>
+
+<div>
+	<router-outlet></router-outlet>
+</div>

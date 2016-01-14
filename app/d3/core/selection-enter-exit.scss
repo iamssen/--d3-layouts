@@ -1,0 +1,14 @@
+ul.d3-selection-enter-exit {
+	font-size: 0.8rem;
+
+	li {
+		color: #cccccc;
+		&.highlight {
+			color: #000000;
+		}
+
+		li {
+			color: #888888;
+		}
+	}
+}

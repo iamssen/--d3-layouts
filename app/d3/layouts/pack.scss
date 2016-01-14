@@ -1,0 +1,29 @@
+svg.d3-layout-pack {
+	g.node {
+		circle {
+			fill: none;
+			stroke: #000000;
+			stroke-width: 1px;
+		}
+
+		text {
+			text-anchor: middle;
+			pointer-events: none;
+		}
+	}
+
+	g.node.leaf {
+		circle {
+			fill: #eeeeee;
+			fill-opacity: 0.6;
+		}
+	}
+
+	path.link {
+		fill: none;
+		stroke: #000000;
+		stroke-linecap: round;
+		stroke-opacity: 0.2;
+		pointer-events: none;
+	}
+}

@@ -1,0 +1,12 @@
+div.d3-layout-treemap {
+	position: relative;
+
+	div.node {
+		border: 1px solid #ffffff;
+		font-size: 10px;
+		font-family: sans-serif;
+		overflow: hidden;
+		position: absolute;
+		text-indent: 2px;
+	}
+}
