@@ -1957,7 +1957,7 @@ System.register("app/d3/layouts/tree.ts", ["github:mbostock/d3@3.5.12", "npm:ang
     }
 });
 
-System.register("app/main/main.ts", ["npm:angular2@2.0.0-beta.0/core", "npm:angular2@2.0.0-beta.0/router", "app/main/main.scss!github:mobilexag/plugin-sass@0.1.0", "app/d3/layouts/hierarchy.ts", "app/index/index.ts", "app/d3/layouts/cluster.ts", "app/d3/layouts/pack.ts", "app/d3/layouts/partition.ts", "app/d3/layouts/pie.ts", "app/d3/layouts/force.ts", "app/d3/core/selection-enter-exit.ts", "app/d3/layouts/stack.ts", "app/d3/layouts/treemap.ts", "app/d3/layouts/histogram.ts", "app/d3/layouts/bundle.ts", "app/d3/layouts/chord.ts", "app/d3/layouts/tree.ts"], function(exports_1) {
+System.register("app/d3/transition/basic.ts", ["github:mbostock/d3@3.5.12", "npm:angular2@2.0.0-beta.0/core", "npm:angular2@2.0.0-beta.0/http"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1967,7 +1967,408 @@ System.register("app/main/main.ts", ["npm:angular2@2.0.0-beta.0/core", "npm:angu
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, hierarchy_1, index_1, cluster_1, pack_1, partition_1, pie_1, force_1, selection_enter_exit_1, stack_1, treemap_1, histogram_1, bundle_1, chord_1, tree_1;
+    var d3, core_1, http_1;
+    var TransitionBasic;
+    return {
+        setters:[
+            function (d3_1) {
+                d3 = d3_1;
+            },
+            function (core_1_1) {
+                core_1 = core_1_1;
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
+            }],
+        execute: function() {
+            //import 'app/d3/layouts/bundle.scss!';
+            TransitionBasic = (function () {
+                function TransitionBasic(elementRef, http) {
+                    this.elementRef = elementRef;
+                    this.http = http;
+                    this.WIDTH = 500;
+                    this.HEIGHT = 400;
+                }
+                TransitionBasic.prototype.twizzle = function (selection, duration) {
+                    //selection
+                    //	.transition('twizzle')
+                    //	.duration(duration)
+                    //	.attrTween('transform', () => d3.interpolateString('rotate(0)', 'rotate(720)'))
+                    //	.transition()
+                    //	.duration(Math.random() * duration)
+                    //	.each('end', () => selection.call(this.twizzle))
+                };
+                TransitionBasic.prototype.ngOnInit = function () {
+                    var svg = d3
+                        .select(this.elementRef.nativeElement)
+                        .select('svg')
+                        .attr({
+                        width: this.WIDTH,
+                        height: this.HEIGHT
+                    });
+                    /*
+                    Transition<Datum>
+            
+                    - transition(): Transition<Datum>
+                    - delay()
+                        - (): number
+                        - (delay: number): this
+                        - (delay: (d, i, o) => number): this
+                    - duration()
+                        - (): number
+                        - (duration: number): this
+                        - (duration: (d, i, o) => number): this
+                    - ease()
+                        - (): (t: number) => number
+                        - (value: string, ...args: any[]): this
+                        - (value: (t: number) => number): this
+                    - attrTween(name: string, tween: (d, i, attr: string) => (t: number) => Primitive): this
+                    - styleTween(name: string, tween: (d, i, attr: string) => (t: number) => Primitive, priority?: string): this
+                    - tween(name: string, factory: () => (t: number) => any): this
+                    - select()
+                    - selectAll()
+                    - filter()
+                    - each()
+                    - attr()
+                    - style()
+                    - text()
+                    - call()
+                    - empty()
+                    - node()
+                    - size()
+                     */
+                    svg
+                        .append('g')
+                        .attr('transform', "translate(" + this.WIDTH / 2 + ", " + this.HEIGHT / 2 + ")")
+                        .append('path')
+                        .attr('d', d3.svg.symbol().type('cross').size(50000))
+                        .transition()
+                        .duration(5000)
+                        .tween('custom tween', function (d, i) {
+                        console.log(d, i);
+                        var opacity = d3.interpolateNumber(0, 1);
+                        var rotate = d3.interpolateNumber(0, 720);
+                        var selection = d3.select(this);
+                        return function (t) {
+                            selection.style('opacity', opacity(t));
+                            selection.attr('transform', "rotate(" + rotate(t) + ")");
+                        };
+                    })
+                        .each('start', function (d, i) { return console.log('start', d, i); })
+                        .each('interrupt', function (d, i) { return console.log('interrupt', d, i); })
+                        .each('end', function (d, i) { return console.log('end', d, i); })
+                        .transition()
+                        .duration(5000)
+                        .styleTween('opacity', function () { return d3.interpolateNumber(1, 0); })
+                        .attrTween('transform', function () { return d3.interpolateString('rotate(720)', 'rotate(0)'); });
+                    //.call(this.twizzle)
+                };
+                TransitionBasic = __decorate([
+                    core_1.Component({
+                        selector: 'd3-transition-basic',
+                        providers: [http_1.HTTP_PROVIDERS]
+                    }),
+                    core_1.View({
+                        template: "<svg class=\"d3-transition-basic\"></svg>"
+                    }), 
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _b) || Object])
+                ], TransitionBasic);
+                return TransitionBasic;
+                var _a, _b;
+            })();
+            exports_1("TransitionBasic", TransitionBasic);
+        }
+    }
+});
+
+System.register("app/d3/transition/interpolate.scss!github:mobilexag/plugin-sass@0.1.0", [], function() { return { setters: [], execute: function() {} } });
+
+System.register("app/d3/transition/interpolate.ts", ["github:mbostock/d3@3.5.12", "npm:angular2@2.0.0-beta.0/core", "npm:angular2@2.0.0-beta.0/http", "app/d3/transition/interpolate.scss!github:mobilexag/plugin-sass@0.1.0"], function(exports_1) {
+    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
+    var d3, core_1, http_1;
+    var TransitionInterpolate;
+    return {
+        setters:[
+            function (d3_1) {
+                d3 = d3_1;
+            },
+            function (core_1_1) {
+                core_1 = core_1_1;
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
+            },
+            function (_1) {}],
+        execute: function() {
+            TransitionInterpolate = (function () {
+                function TransitionInterpolate(elementRef) {
+                    this.elementRef = elementRef;
+                }
+                TransitionInterpolate.prototype.ngOnInit = function () {
+                    var fmax = 100;
+                    var data = d3.range(fmax + 1).map(function (i) {
+                        return { index: i };
+                    });
+                    var interpolate;
+                    var columns = [];
+                    var column;
+                    column = 'interpolateString';
+                    columns.push(column);
+                    interpolate = d3.interpolateString('x(0)', 'x(1)');
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = interpolate(f / fmax);
+                    }
+                    column = 'interpolateNumber';
+                    columns.push(column);
+                    interpolate = d3.interpolateNumber(0, 1);
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = interpolate(f / fmax);
+                    }
+                    column = 'interpolateRound';
+                    columns.push(column);
+                    interpolate = d3.interpolateRound(0, 1);
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = interpolate(f / fmax);
+                    }
+                    column = 'interpolateRgb';
+                    columns.push(column);
+                    interpolate = d3.interpolateRgb(d3.rgb(0, 0, 0), d3.rgb(255, 255, 255));
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = interpolate(f / fmax);
+                    }
+                    column = 'interpolateArray';
+                    columns.push(column);
+                    interpolate = d3.interpolateArray([0, 0, 0], [1, 1, 1]);
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = interpolate(f / fmax).toString();
+                    }
+                    column = 'interpolateObject';
+                    columns.push(column);
+                    interpolate = d3.interpolateObject({ a: 0, b: 0 }, { a: 1, b: 1 });
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = JSON.stringify(interpolate(f / fmax));
+                    }
+                    function interpolateChar(a, b) {
+                        var interpolate = d3.interpolateRound(a.charCodeAt(0), b.charCodeAt(0));
+                        return function (t) { return String.fromCharCode(interpolate(t)); };
+                    }
+                    column = 'custom1';
+                    columns.push(column);
+                    interpolate = interpolateChar('a', 'z');
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = interpolate(f / fmax);
+                    }
+                    function interpolateString(str) {
+                        var interpolate = d3.interpolateNumber(0, str.length);
+                        return function (t) {
+                            var n = interpolate(t);
+                            var f = Math.floor(n);
+                            var newString = str.substr(0, f);
+                            if (n - f > 0.5)
+                                newString += '_';
+                            return newString;
+                        };
+                    }
+                    column = 'custom2';
+                    columns.push(column);
+                    interpolate = interpolateString('hello world!!!');
+                    for (var f = -1; ++f <= fmax;) {
+                        data[f][column] = interpolate(f / fmax);
+                    }
+                    //----------------------------------------------------------------
+                    // 뭔가 에러가 있다... 숫자 interpolation이 제대로 안됨
+                    //----------------------------------------------------------------
+                    //column = 'interpolateTransform';
+                    //columns.push(column);
+                    //interpolate = d3.interpolateTransform('rotate(0)', 'rotate(180)translate(100, 100)');
+                    //for (let f:number = -1; ++f <= fmax;) {
+                    //	data[f][column] = interpolate(f / fmax);
+                    //}
+                    var table = d3
+                        .select(this.elementRef.nativeElement)
+                        .select('table');
+                    table
+                        .append('tr')
+                        .selectAll('th')
+                        .data(columns)
+                        .enter()
+                        .append('th')
+                        .text(function (column) { return column; });
+                    table
+                        .selectAll('.tr')
+                        .data(data)
+                        .enter()
+                        .append('tr')
+                        .html(function (d) { return columns.map(function (column) { return ("<td>" + d[column] + "</td>"); }).join(''); });
+                };
+                TransitionInterpolate = __decorate([
+                    core_1.Component({
+                        selector: 'd3-transition-interpolate',
+                        providers: [http_1.HTTP_PROVIDERS]
+                    }),
+                    core_1.View({
+                        template: "<table class=\"d3-transition-interpolate\"></table>"
+                    }), 
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+                ], TransitionInterpolate);
+                return TransitionInterpolate;
+                var _a;
+            })();
+            exports_1("TransitionInterpolate", TransitionInterpolate);
+        }
+    }
+});
+
+System.register("app/d3/transition/pie.ts", ["github:mbostock/d3@3.5.12", "npm:angular2@2.0.0-beta.0/core"], function(exports_1) {
+    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
+    var d3, core_1;
+    var TransitionPie;
+    return {
+        setters:[
+            function (d3_1) {
+                d3 = d3_1;
+            },
+            function (core_1_1) {
+                core_1 = core_1_1;
+            }],
+        execute: function() {
+            TransitionPie = (function () {
+                function TransitionPie(elementRef) {
+                    this.elementRef = elementRef;
+                    this.RADIUS = 300;
+                }
+                TransitionPie.prototype.getData = function () {
+                    return d3
+                        .range((Math.random() * 10) + 5)
+                        .map(function (i) {
+                        return {
+                            label: 'item' + i,
+                            value: Math.floor(Math.random() * 100000)
+                        };
+                    });
+                };
+                TransitionPie.prototype.ngOnInit = function () {
+                    var _this = this;
+                    //----------------------------------------------------------------
+                    // Svg and Data
+                    //----------------------------------------------------------------
+                    var g = d3.select(this.elementRef.nativeElement)
+                        .select('svg')
+                        .attr({ width: this.RADIUS * 2, height: this.RADIUS * 2 })
+                        .append('g')
+                        .attr('transform', "translate(" + this.RADIUS + ", " + this.RADIUS + ")");
+                    //----------------------------------------------------------------
+                    // Layout
+                    //----------------------------------------------------------------
+                    var pie = d3.layout.pie().value(function (d, i) { return d.value; });
+                    var color = d3.scale.category20();
+                    //----------------------------------------------------------------
+                    // Nodes
+                    //----------------------------------------------------------------
+                    var DURATION = 1000;
+                    var path;
+                    var arc = d3.svg.arc()
+                        .outerRadius(this.RADIUS - 20)
+                        .innerRadius(this.RADIUS - 27);
+                    function entry(g, source) {
+                        var data = pie(source);
+                        var path = g
+                            .selectAll('.path')
+                            .data(data)
+                            .enter()
+                            .append('path')
+                            .attr('fill', function (d, i) { return color(i.toString()); });
+                        path
+                            .transition()
+                            .duration(DURATION)
+                            .tween('entry arc', function () {
+                            var selection = d3.select(this);
+                            return function (t) {
+                                selection
+                                    .attr('d', function (d, i) {
+                                    var start = d.startAngle * t;
+                                    var end = d.endAngle * t;
+                                    return arc.startAngle(start).endAngle(end)(d, i);
+                                });
+                            };
+                        });
+                        return path;
+                    }
+                    function exit(path) {
+                        path
+                            .transition()
+                            .duration(DURATION)
+                            .tween('exit arc', function () {
+                            var selection = d3.select(this);
+                            return function (t) {
+                                var r = 1 - t;
+                                var a = (Math.PI * 2) - (Math.PI * 2 * r);
+                                selection
+                                    .attr('d', function (d, i) {
+                                    var start = (d.startAngle * r) + a;
+                                    var end = (d.endAngle * r) + a;
+                                    return arc.startAngle(start).endAngle(end)(d, i);
+                                });
+                            };
+                        })
+                            .remove();
+                    }
+                    //----------------------------------------------------------------
+                    // control
+                    //----------------------------------------------------------------
+                    path = entry(g, this.getData());
+                    d3
+                        .select(this.elementRef.nativeElement)
+                        .select('#refresh')
+                        .on('click', function () {
+                        exit(path);
+                        path = entry(g, _this.getData());
+                    });
+                };
+                TransitionPie = __decorate([
+                    core_1.Component({
+                        selector: 'd3-transition-pie'
+                    }),
+                    core_1.View({
+                        template: "\n\t<div align=\"right\">\n\t\t<button id=\"refresh\">REFRESH</button>\n\t</div>\n\t<svg class=\"d3-transition-pie\"></svg>\n\t"
+                    }), 
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+                ], TransitionPie);
+                return TransitionPie;
+                var _a;
+            })();
+            exports_1("TransitionPie", TransitionPie);
+        }
+    }
+});
+
+System.register("app/main/main.ts", ["npm:angular2@2.0.0-beta.0/core", "npm:angular2@2.0.0-beta.0/router", "app/main/main.scss!github:mobilexag/plugin-sass@0.1.0", "app/d3/layouts/hierarchy.ts", "app/index/index.ts", "app/d3/layouts/cluster.ts", "app/d3/layouts/pack.ts", "app/d3/layouts/partition.ts", "app/d3/layouts/pie.ts", "app/d3/layouts/force.ts", "app/d3/core/selection-enter-exit.ts", "app/d3/layouts/stack.ts", "app/d3/layouts/treemap.ts", "app/d3/layouts/histogram.ts", "app/d3/layouts/bundle.ts", "app/d3/layouts/chord.ts", "app/d3/layouts/tree.ts", "app/d3/transition/basic.ts", "app/d3/transition/interpolate.ts", "app/d3/transition/pie.ts"], function(exports_1) {
+    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
+    var core_1, router_1, hierarchy_1, index_1, cluster_1, pack_1, partition_1, pie_1, force_1, selection_enter_exit_1, stack_1, treemap_1, histogram_1, bundle_1, chord_1, tree_1, basic_1, interpolate_1, pie_2;
     var config, Main;
     return {
         setters:[
@@ -2019,6 +2420,15 @@ System.register("app/main/main.ts", ["npm:angular2@2.0.0-beta.0/core", "npm:angu
             },
             function (tree_1_1) {
                 tree_1 = tree_1_1;
+            },
+            function (basic_1_1) {
+                basic_1 = basic_1_1;
+            },
+            function (interpolate_1_1) {
+                interpolate_1 = interpolate_1_1;
+            },
+            function (pie_2_1) {
+                pie_2 = pie_2_1;
             }],
         execute: function() {
             config = [
@@ -2038,7 +2448,11 @@ System.register("app/main/main.ts", ["npm:angular2@2.0.0-beta.0/core", "npm:angu
                 { path: '/d3/layouts/histogram', name: 'Histogram Layout', component: histogram_1.HistogramLayout },
                 { path: '/d3/layouts/bundle', name: 'Bundle Layout', component: bundle_1.BundleLayout },
                 { path: '/d3/layouts/chord', name: 'Chord Layout', component: chord_1.ChordLayout },
-                { path: '/d3/layouts/force', name: 'Force Layout', component: force_1.ForceLayout }
+                { path: '/d3/layouts/force', name: 'Force Layout', component: force_1.ForceLayout },
+                // transition
+                { path: '/d3/transition/basic', name: 'Transition Basic', component: basic_1.TransitionBasic },
+                { path: '/d3/transition/interpolate', name: 'Transition Interpolate', component: interpolate_1.TransitionInterpolate },
+                { path: '/d3/transition/pie', name: 'Transition Pie', component: pie_2.TransitionPie }
             ];
             Main = (function () {
                 function Main(location) {
@@ -2102,6 +2516,7 @@ System.register('app/d3/layouts/histogram.scss!github:mobilexag/plugin-sass@0.1.
 System.register('app/d3/layouts/bundle.scss!github:mobilexag/plugin-sass@0.1.0', [], false, function() {});
 System.register('app/d3/layouts/chord.scss!github:mobilexag/plugin-sass@0.1.0', [], false, function() {});
 System.register('app/d3/layouts/tree.scss!github:mobilexag/plugin-sass@0.1.0', [], false, function() {});
+System.register('app/d3/transition/interpolate.scss!github:mobilexag/plugin-sass@0.1.0', [], false, function() {});
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-("svg.d3-layout-tree{background-color:#eeeeee}svg.d3-layout-tree .node{font:10px sans-serif}svg.d3-layout-tree .node circle{fill:#fff;stroke:steelblue;stroke-width:1px}svg.d3-layout-tree .link{fill:none;stroke:#ccc;stroke-width:1px}\nsvg.d3-layout-chord{font-size:10px}svg.d3-layout-chord .chord{fill-opacity:0.67}\nsvg.d3-layout-bundle .node{font-size:8px;font-family:\"Helvetica Neue\", Helvetica, Arial, sans-serif}svg.d3-layout-bundle .link{stroke:steelBlue;stroke-opacity:0.7;fill:none}\nsvg.d3-layout-histogram{font-size:10px;font-family:sans-serif}svg.d3-layout-histogram g.axis line,svg.d3-layout-histogram g.axis path{shape-rendering:crispEdges;stroke:#000000;fill:none}svg.d3-layout-histogram rect.bar{fill:steelblue;shape-rendering:crispEdges}svg.d3-layout-histogram text.label{fill:#ffffff}\ndiv.d3-layout-treemap{position:relative}div.d3-layout-treemap div.node{border:1px solid #ffffff;font-size:10px;font-family:sans-serif;overflow:hidden;position:absolute;text-indent:2px}\nsvg.d3-layout-stack g.axis text{font-size:10px;font-family:sans-serif}svg.d3-layout-stack g.axis line,svg.d3-layout-stack g.axis path{fill:none;stroke:#000000;shape-rendering:crispEdges}svg.d3-layout-stack g.axis--x path{display:none}\nul.d3-selection-enter-exit{font-size:0.8rem}ul.d3-selection-enter-exit li{color:#cccccc}ul.d3-selection-enter-exit li.highlight{color:#000000}ul.d3-selection-enter-exit li li{color:#888888}\nsvg.d3-layout-force{background-color:#eeeeee}svg.d3-layout-force line.link{stroke:#000;stroke-width:1px}svg.d3-layout-force circle.node{cursor:move;fill:#ccc;stroke:#000;stroke-width:1px}svg.d3-layout-force circle.node.fixed{fill:#ff0000}div.d3-layout-force{margin-bottom:20px}div.d3-layout-force p{font-size:0.9rem}div.d3-layout-force p select{width:70px}\nsvg.d3-layout-pie .arc text{text-anchor:middle;pointer-events:none}\nsvg.d3-layout-partition path.link{stroke:#000000;stroke-width:1px}\nsvg.d3-layout-pack g.node circle{fill:none;stroke:#000000;stroke-width:1px}svg.d3-layout-pack g.node text{text-anchor:middle;pointer-events:none}svg.d3-layout-pack g.node.leaf circle{fill:#eeeeee;fill-opacity:0.6}svg.d3-layout-pack path.link{fill:none;stroke:#000000;stroke-linecap:round;stroke-opacity:0.2;pointer-events:none}\nsvg.d3-layout-cluster{background-color:#eeeeee}svg.d3-layout-cluster .node{font:10px sans-serif}svg.d3-layout-cluster .node circle{fill:#fff;stroke:steelblue;stroke-width:1px}svg.d3-layout-cluster .link{fill:none;stroke:#ccc;stroke-width:1px}\nul.main-menu{padding-left:0}ul.main-menu li{display:inline;list-style-type:none;margin-right:4px;font-size:0.85rem}ul.main-menu li a{text-decoration:none}ul.main-menu li a.main-menu-active{text-decoration:underline}svg{border:1px solid #000000}\n");
+("table.d3-transition-interpolate{font-size:12px;border-collapse:collapse}table.d3-transition-interpolate th,table.d3-transition-interpolate td{border:1px solid #000000;padding:2px}table.d3-transition-interpolate th{background-color:rgba(0,0,0,0.07)}\nsvg.d3-layout-tree{background-color:#eeeeee}svg.d3-layout-tree .node{font:10px sans-serif}svg.d3-layout-tree .node circle{fill:#fff;stroke:steelblue;stroke-width:1px}svg.d3-layout-tree .link{fill:none;stroke:#ccc;stroke-width:1px}\nsvg.d3-layout-chord{font-size:10px}svg.d3-layout-chord .chord{fill-opacity:0.67}\nsvg.d3-layout-bundle .node{font-size:8px;font-family:\"Helvetica Neue\", Helvetica, Arial, sans-serif}svg.d3-layout-bundle .link{stroke:steelBlue;stroke-opacity:0.7;fill:none}\nsvg.d3-layout-histogram{font-size:10px;font-family:sans-serif}svg.d3-layout-histogram g.axis line,svg.d3-layout-histogram g.axis path{shape-rendering:crispEdges;stroke:#000000;fill:none}svg.d3-layout-histogram rect.bar{fill:steelblue;shape-rendering:crispEdges}svg.d3-layout-histogram text.label{fill:#ffffff}\ndiv.d3-layout-treemap{position:relative}div.d3-layout-treemap div.node{border:1px solid #ffffff;font-size:10px;font-family:sans-serif;overflow:hidden;position:absolute;text-indent:2px}\nsvg.d3-layout-stack g.axis text{font-size:10px;font-family:sans-serif}svg.d3-layout-stack g.axis line,svg.d3-layout-stack g.axis path{fill:none;stroke:#000000;shape-rendering:crispEdges}svg.d3-layout-stack g.axis--x path{display:none}\nul.d3-selection-enter-exit{font-size:0.8rem}ul.d3-selection-enter-exit li{color:#cccccc}ul.d3-selection-enter-exit li.highlight{color:#000000}ul.d3-selection-enter-exit li li{color:#888888}\nsvg.d3-layout-force{background-color:#eeeeee}svg.d3-layout-force line.link{stroke:#000;stroke-width:1px}svg.d3-layout-force circle.node{cursor:move;fill:#ccc;stroke:#000;stroke-width:1px}svg.d3-layout-force circle.node.fixed{fill:#ff0000}div.d3-layout-force{margin-bottom:20px}div.d3-layout-force p{font-size:0.9rem}div.d3-layout-force p select{width:70px}\nsvg.d3-layout-pie .arc text{text-anchor:middle;pointer-events:none}\nsvg.d3-layout-partition path.link{stroke:#000000;stroke-width:1px}\nsvg.d3-layout-pack g.node circle{fill:none;stroke:#000000;stroke-width:1px}svg.d3-layout-pack g.node text{text-anchor:middle;pointer-events:none}svg.d3-layout-pack g.node.leaf circle{fill:#eeeeee;fill-opacity:0.6}svg.d3-layout-pack path.link{fill:none;stroke:#000000;stroke-linecap:round;stroke-opacity:0.2;pointer-events:none}\nsvg.d3-layout-cluster{background-color:#eeeeee}svg.d3-layout-cluster .node{font:10px sans-serif}svg.d3-layout-cluster .node circle{fill:#fff;stroke:steelblue;stroke-width:1px}svg.d3-layout-cluster .link{fill:none;stroke:#ccc;stroke-width:1px}\nul.main-menu{padding-left:0}ul.main-menu li{display:inline;list-style-type:none;margin-right:4px;font-size:0.85rem}ul.main-menu li a{text-decoration:none}ul.main-menu li a.main-menu-active{text-decoration:underline}svg{border:1px solid #000000}\n");
 //# sourceMappingURL=app.js.map

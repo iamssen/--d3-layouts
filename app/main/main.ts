@@ -25,6 +25,9 @@ import {HistogramLayout} from "../d3/layouts/histogram";
 import {BundleLayout} from "../d3/layouts/bundle";
 import {ChordLayout} from "../d3/layouts/chord";
 import {TreeLayout} from "../d3/layouts/tree";
+import {TransitionBasic} from "../d3/transition/basic";
+import {TransitionInterpolate} from "../d3/transition/interpolate";
+import {TransitionPie} from "../d3/transition/pie";
 
 let config:RouteDefinition[] = [
 	{path: '/', name: 'Index', component: Index},
@@ -43,7 +46,11 @@ let config:RouteDefinition[] = [
 	{path: '/d3/layouts/histogram', name: 'Histogram Layout', component: HistogramLayout},
 	{path: '/d3/layouts/bundle', name: 'Bundle Layout', component: BundleLayout},
 	{path: '/d3/layouts/chord', name: 'Chord Layout', component: ChordLayout},
-	{path: '/d3/layouts/force', name: 'Force Layout', component: ForceLayout}
+	{path: '/d3/layouts/force', name: 'Force Layout', component: ForceLayout},
+	// transition
+	{path: '/d3/transition/basic', name: 'Transition Basic', component: TransitionBasic},
+	{path: '/d3/transition/interpolate', name: 'Transition Interpolate', component: TransitionInterpolate},
+	{path: '/d3/transition/pie', name: 'Transition Pie', component: TransitionPie}
 ];
 
 @Component({
