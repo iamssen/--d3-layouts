@@ -1,7 +1,7 @@
 {
   "name": "learn-d3",
   "description": "...",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Your name",
     "email": "your@email.com",
@@ -17,15 +17,15 @@
   },
   "jspm": {
     "dependencies": {
-      "angular2": "npm:angular2@^2.0.0-beta.0",
-      "clean-css": "npm:clean-css@^3.4.8",
+      "angular2": "npm:angular2@^2.0.0-beta.1",
+      "clean-css": "npm:clean-css@^3.4.9",
       "css": "github:systemjs/plugin-css@^0.1.20",
       "d3": "github:mbostock/d3@^3.5.12",
       "d3tip": "npm:d3tip@^0.4.2",
       "es6-promise": "npm:es6-promise@^3.0.2",
       "es6-shim": "github:es-shims/es6-shim@^0.34.0",
       "jquery": "github:components/jquery@^2.1.4",
-      "rxjs": "npm:rxjs@^5.0.0-beta.0",
+      "rxjs": "npm:rxjs@^5.0.0-beta.1",
       "scss": "github:mobilexag/plugin-sass@^0.1.0",
       "typescript": "npm:typescript@^1.7.5"
     }
